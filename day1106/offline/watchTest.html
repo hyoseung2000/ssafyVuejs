@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      {{x}} -- {{y}} -- {{obj.age}} -- {{obj.name}} -- {{obj2.age}}
+      <hr />
+      <button @click="++x">add x</button>
+      <button @click="++y">add y</button>
+      <button @click="++obj.age">add age</button>
+      <button @click="++obj2.age">add age2</button>
+      <button @click="addName">change name</button>
+    </div>
+
+    <script>
+      const { createApp, ref, watch, reactive } = Vue;
+
+      const app = createApp({
+        setup() {
+          const x = ref(0);
+          const y = ref(0);
+          const obj = ref({ name: "harry potter", age: 12 });
+          const obj2 = reactive({ name: "merry jane", age: 25 });
+
+          /* // 1. 단일 값 watch
+          const w1 = watch(x, (newX, oldX) => {
+            console.log(`x값 : ${oldX} => ${newX}`);
+          });
+
+          // 1-2. 이것도 가능
+          const w2 = watch(
+            () => x.value, // == ()=>{return x.value}
+            (newX) => console.log(`x값 : ${newX}`)
+          ); */
+
+          // 2. 복수 값 watch
+          const w3 = watch(
+            [x, y], //감시 대상
+            ([newX, newY], [oldX, oldY]) => {
+              console.log(`x값 : ${oldX} => ${newX}`);
+              console.log(`y값 : ${oldY} => ${newY}`);
+            }
+          );
+
+          // 3. 객체 watch
+          const w4 = watch(obj.value, () => {
+            console.log(`age : ${obj.value.age}`);
+            console.log(`name : ${obj.value.name}`);
+          });
+
+          function addName() {
+            return (obj.value.name += " gogo");
+          }
+
+          function addName() {
+            return (obj.value.name += " gogo");
+          }
+
+          // 4. obj2
+          // Invalid watch source:  20
+          //A watch source can only be a getter/effect function, a ref, a reactive object, or an array of these types.
+
+          const w5 = watch(
+            // obj2.age
+            () => obj2.age,
+            (newAge, oldAge) => {
+              console.log(`age : ${oldAge} => ${newAge}`);
+            }
+          );
+
+          // 5.
+          const w6 = watch(
+            obj2, //reactive 인 경우
+            () => {
+              console.log(`age 값2: ${obj.age}`);
+              console.log(`name 값2: ${obj.name + "go"}`);
+            },
+            { deep: true } //watch대상이 객체인 경우 객체 내부의 값까지 감시
+          );
+
+          return { x, y, obj, obj2, addName };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

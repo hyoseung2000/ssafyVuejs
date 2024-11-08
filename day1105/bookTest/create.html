@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>도서관리</title>
+	<link rel="stylesheet" href="./css/main.css" />
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<div class="header">
+			<a href="index.html">
+				<img src="./img/ssafy_logo.png" id="ssafy_logo" /></a>
+			<p class="logo">도서관리</p>
+		</div>
+		<div class="regist">
+			<h1 class="underline">SSAFY 도서 등록</h1>
+			<div class="regist_form">
+				<label for="isbn">도서번호</label>
+				<input type="text" id="isbn" name="isbn" v-model="isbn" /><br />
+
+				<label for="title">도서명</label>
+				<input type="text" id="title" name="title" v-model="title" /><br />
+
+				<label for="author">저자</label>
+				<input type="text" id="author" name="author" v-model="author" /><br />
+
+				<label for="price">가격</label>
+				<input type="number" id="price" name="price" v-model="price" /><br />
+
+				<label for="content">설명</label><br />
+				<textarea id="content" name="content" cols="35" rows="5" v-model="content"></textarea><br />
+
+				<button @click="registBook">등록</button>
+				<button @click="moveList">목록</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		const { createApp, ref } = Vue;
+
+		const app = createApp({
+			setup() {
+				const isbn = ref("");
+				const title = ref("");
+				const author = ref("");
+				const price = ref("");
+				const content = ref("");
+
+				function registBook() {
+					// 로컬스토리지에 저장된 데이터 가져오기
+					const booklist = localStorage.getItem("booklist");
+
+					// 데이터 선언
+					let oldBook = [];
+
+					// 기존 로컬스토리지에 저장된 내용이 있다면 oldBook으로 이동
+					if (booklist != null) {
+						oldBook = JSON.parse(booklist);
+					}
+
+					// 새 데이터를 oldBook에 추가
+					let newBook = {
+						"isbn": isbn.value,
+						"title": title.value,
+						"author": author.value,
+						"price": price.value,
+						"content": content.value
+					};
+					oldBook.push(newBook);
+
+					// 로컬스트리지에 다시 저장
+					localStorage.setItem("booklist", JSON.stringify(oldBook));
+
+					// 등록 성공 메세지 출력
+					alert("등록이 완료되었습니다.");
+
+					// 목록 페이지로 이동하기
+					location.href = "./list.html";
+				}
+
+				function moveList() {
+					location.href = "list.html";
+				}
+
+				return {
+					isbn, title, author, price, content, registBook, moveList
+				};
+			},
+		}).mount("#app");
+	</script>
+</body>
+</html>

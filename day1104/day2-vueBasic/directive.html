@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <!-- 
+    directive : html 태그 안에서 -v로 시작하는 모든 속성들
+    화면 요소를 좀 더 쉽게 조작하기 위한 목적으로 사용
+    v-bind, v-for, v-if, v-model...
+   -->
+
+  <body>
+    <div id="app">
+      <h1 v-pre>{{그대로 보여주세요}}</h1>
+      <h1 v-pre>{{msg}}</h1>
+      <h1>{{msg}}</h1>
+      <hr />
+      <!-- innerHTML과 동일 -->
+      <div v-html="msg"></div>
+      <!-- {{}}과 동일 -->
+      <div v-text="msg"></div>
+      <hr />
+
+      <!-- v-if: 조건에 맞으면 태그가 생성됨. -->
+      <a href="#" v-if="flag1">gogo Vue!</a>
+      <!-- 거짓이면 주석처리됨, 태그 자체가 사라짐 -->
+      <a href="#" v-if="flag2">gogo Vue!</a>
+      <br />
+      <a href="#" v-show="flag1">show Vue!</a>
+      <!-- 거짓이면 display : none, 영역은 차지하고 있음-->
+      <!-- 조건이 자주 변경된다면 > show가 효율적임 -->
+      <a href="#" v-show="flag2">show Vue!</a>
+      <hr />
+      <ul>
+        <li v-for="s in systems">{{s}}</li>
+      </ul>
+
+      <!-- 원래 태그가 가지고 있는 속성의 값을 vue 객체의 데이터와 연결 시킬 때 -->
+      <h3 v-bind:id="uid">this is h3</h3>
+      <h3 :id="uid">this is h3</h3>
+      <image :src="src"><br>
+
+      <!--v-on: 이벤트 등록-->
+      <button v-on:click="hello">hello</button>
+      <button @click="hello">hello</button>
+    </div>
+    <script>
+      const { createApp, ref } = Vue;
+
+      createApp({
+        setup() {
+          function hello() {
+            alert("hello!!");
+          }
+          return {
+            hello,
+          };
+        },
+        data() {
+          //반드시 함수 형식으로 표기하고, return 해줘야 함 !
+          return {
+            flag1: true,
+            flag2: false,
+            systems: ["window", "mac", "linux"],
+            uid: "a123",
+            msg: "<h1>this is h1</h1>",
+            src: "./img/blueBlouse.jpg",
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

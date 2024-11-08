@@ -1,0 +1,58 @@
+<!-- computed.html -->
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <h2>남은 할 일 ({{yetTodos.length}}개 남음)</h2>
+      <h3>Todo List</h3>
+
+      <ul v-if="isLeftTodos">
+        <!-- :속성 띄워쓰지 말 것!!!!! -->
+        <li v-for="todo in yetTodos" :key="todo.id" @click="todo.isCompleted=true">
+          {{todo.text}}
+        </li>
+      </ul>
+
+      <div v-else>All Completed!!!!</div>
+    </div>
+
+    <script>
+      const { createApp, ref, computed } = Vue;
+
+      const app = createApp({
+        setup() {
+          let id = 0;
+          const todos = ref([
+            { id: ++id, text: "Vue 실습", isCompleted: false },
+            { id: ++id, text: "자격증 공부", isCompleted: false },
+            { id: ++id, text: "TIL 작성", isCompleted: false },
+            { id: ++id, text: "출결 체크", isCompleted: false },
+            { id: ++id, text: "1일 1알고", isCompleted: false },
+          ]);
+
+          //1)yetTodos: computed(계산형 속성:형태는 함수지만 데이터처럼 사용 가능)
+          //미완료인 것들 리턴(isCompleted값이 변경될 때만 실행됨. 값이 바뀌지 않으면 cache된 값을 재사용.)
+          const yetTodos = computed(() => todos.value.filter((todo) => !todo.isCompleted));
+
+          //2)남은일 여부(yetTodos의 길이가 바뀔때만 실행)
+          const isLeftTodos = computed(() => yetTodos.value.length > 0);
+
+          return {
+            todos,
+            yetTodos,
+            isLeftTodos,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

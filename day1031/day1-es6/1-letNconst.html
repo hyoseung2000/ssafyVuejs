@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        /* 
+        scope : 변수를 사용할 수 있는 범위
+        1. 함수 레벨 스코프(var)
+            : 함수 내에서 선언된 변수는 함수 안에서만 유효하며 외부에서는 참조 불가
+        2. 블럭 레벨 스코프(let, const)
+            : 모든 코드 블럭 (함수, if, for, while, try-catch문 등의 {} 내에서
+              선언된 변수는 코드 블럭 안에서만 유효하며 외부에서는 참조 불가
+            )
+        */
+
+        //1. var: 재선언 o, 재할당 o
+        var val = 123;
+        var val = "tom";
+        console.log(val); //tom
+
+        var x = 100;
+        if(x > 50){
+            x = 200;
+        }
+        console.log(x); //200
+
+        //2. let: 재선언 x, 재할당 o
+        let no = 99;
+        // let no = 100;
+
+        no = 123;
+        console.log(no); //123
+
+        let greet = "hello";
+        let times = 55;
+        if(times > 5){
+            let greet = "bye";
+            let times = 999;
+            let name = "kim";
+            console.log(greet, times); //bye 999
+        }
+        console.log(name); //undefined
+        console.log(greet, times); //hello 55
+
+        //3. const; 재선언 x, 재할당 x
+        var id="king";
+
+        const user = {
+            id: "tommy",
+            age: 25,
+            getId: function () {
+                return this.id;
+            },
+            getAge(){ //concise.function
+                return this.age;
+            }
+        };
+        user.id = "bill"; //user 객체 내의 값은 변경 가능
+        console.log(user.getId(), user.age); //king
+
+        //scope check
+        var i = 10;
+        for(var i=0; i<5; i++){
+            console.log(i);
+        }
+        console.log("i=",i); //바뀜
+
+        let j=1000;
+        for(let j=0; j<5; j++){
+            console.log(j);
+        }
+        console.log("j= ",j); //안바뀜
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

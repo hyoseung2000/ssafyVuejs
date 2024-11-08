@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<script>
+    //destructuring assignment : 비구조화 할당
+    //배열이나 객체가 가지고 있는 값을 개별적인 변수에 할당하는 간편한 방식
+
+    //1. array
+    const colors=['red','white','green'];
+    const[c1, c2, c3] = colors; //c1 = colors[0]
+    console.log(c1, c2, c3); //red white green
+
+    const[b1, b2] = colors;
+    console.log(b1, b2); //red white
+
+    //2. json
+    const user = {
+        id:"magician",
+        name:"harry potter",
+        age:12
+    }
+    
+    //변수명 동일할 때
+    let {id,name,age} = user;
+    console.log(id, name, age);
+
+    //변수명 다를 때
+    {
+        let{
+            id:ssafyid,
+            name:ssafyname,
+            age:ssafyage
+        } = user;
+        console.log(ssafyid, ssafyname, ssafyage);
+    }
+</script>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      msg:{{msg}} <br />
+      <h1>배열 데이터</h1>
+      <ul>
+        <li v-for="book in books">{{book}}</li>
+      </ul>
+
+      <h1>json data</h1>
+      <ul>
+        <li v-for="(value, key, index) in story">{{index+1}}. {{key}} : {{value}}</li>
+      </ul>
+
+      <h1>json 배열 데이터</h1>
+      <ul>
+        <li v-for="(story, index) in stories">{{index+1}}. {{story.writer}} : {{story.name}}</li>
+      </ul>
+    </div>
+
+    <script>
+      const { createAPP, ref } = Vue;
+      createAPP({
+        setup() {
+          const msg = ref("안녕 보보!!!");
+
+          const books = ref(["햄릿", "콩쥐 팥쥐", "누가 내치즈를 옮겼을까"]);
+
+          const story = ref({
+            author: "세익스피어",
+            title: "tempest",
+            publisher: "green house",
+          });
+
+          const stories = ref([
+            {
+              writer: "james lee",
+              name: "good job",
+            },
+            {
+              writer: "billy jones",
+              name: "how are you, today?",
+            },
+            {
+              writer: "david min",
+              name: "farewell to arms",
+            },
+          ]);
+
+          return {
+            msg,
+            books,
+            story,
+            stories,
+          };
+        },
+      });
+    </script>
+  </body>
+</html>

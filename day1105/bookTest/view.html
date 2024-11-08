@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>도서관리</title>
+	<link rel="stylesheet" href="./css/main.css" />
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div class="header">
+			<a href="index.html"> <img src="./img/ssafy_logo.png" id="ssafy_logo" /></a>
+			<p class="logo">도서관리</p>
+		</div>
+		<div class="regist">
+			<h1 class="underline">SSAFY 도서 정보</h1>
+			<div class="regist_form">
+				<label for="isbn">도서번호</label>
+				<div class="view">{{book.isbn}}</div>
+				<label for="title">도서명</label>
+				<div class="view">{{book.title}}</div>
+				<label for="author">저자</label>
+				<div class="view">{{book.author}}</div>
+				<label for="price">가격</label>
+				<div class="view">{{numberWithCommas(book.price)}}원</div>
+				<label for="content">설명</label>
+				<div class="view" v-html="enterToBr(book.content)"></div>
+				<div style="padding-top: 15px">
+					<a href="./list.html" class="btn">목록</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		const { createApp, ref } = Vue;
+		// url에서 이전 화면에서 넘어온 파라미터정보 얻기.
+		createApp({
+			setup() {
+				const isbn = new URL(document.location).searchParams.get("isbn");
+				const booklist = JSON.parse(localStorage.getItem("booklist"));
+
+				const book = ref({});
+				booklist.forEach(oldBook => {
+					if (oldBook.isbn == isbn) {
+						book.value = oldBook;
+					}
+				});
+
+				function numberWithCommas(x) {
+					console.log(x);
+					return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				}
+
+				function enterToBr(str) {
+					// 문자열에 enter값을 <br />로 변경.(html상에서 줄바꿈 처리)
+					return str.replace(/(?:\r\n|\r|\n)/g, "<br />");
+				}
+
+				return {
+					book, numberWithCommas, enterToBr
+				};
+			}
+		}).mount("#app")
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+C:\ssafy\vuejs\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1615083986.index
+3583918243.index
+2899065801.index
+4015691428.index
+3362161906.index
+3898609062.index

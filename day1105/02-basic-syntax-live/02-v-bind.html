@@ -1,0 +1,76 @@
+<!-- v-bind.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #userid {
+        font-weight: bold;
+        font-size: 1.5rem;
+      }
+      .input {
+        background-color: rgb(233, 179, 140);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <img v-bind:src="imageSrc" />
+      <a :href="myUrl">Move to Google</a>
+      <p :[dynamicattr]="dynamicValue">Dynamic Attr</p>
+      <button :disabled="isOk" v-on:click="pushOk">확인</button>
+      <button :disabled="isCancel" v-on:click="pushCancel">취소</button>
+      <button :style="`font-size: ${size}px`">font size 25px</button>
+      <input type="text" v-bind="multiAttrs" />
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const imageSrc = ref("https://picsum.photos/200");
+          const myUrl = ref("https://www.google.co.kr/");
+          const dynamicattr = ref("title");
+          const dynamicValue = ref("Hello Vue.js !!!!");
+
+          const isOk = ref(false);
+          const isCancel = ref(true);
+
+          const size = ref(25);
+
+          const multiAttrs = ref({ id: "userid", class: "input" });
+
+          const pushOk = () => {
+            isOk.value = true;
+            isCancel.value = false;
+          };
+
+          const pushCancel = () => {
+            isOk.value = false;
+            isCancel.value = true;
+          };
+
+          return {
+            imageSrc,
+            myUrl,
+            dynamicattr,
+            dynamicValue,
+            isOk,
+            isCancel,
+            pushOk,
+            pushCancel,
+            size,
+            multiAttrs,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

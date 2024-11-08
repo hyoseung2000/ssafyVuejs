@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>dada's fashion shop</title>
+    <style type="text/css">
+      @import url("css/shop.css");
+    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div class="nav-bar"></div>
+    <div id="app">
+      <div class="product">
+        <div class="product-image">
+          <!-- 1. 상품 이미지 넣기-->
+          <img :src="image" />
+        </div>
+
+        <div class="product-info">
+          <!--  2. 상품명 -->
+          <h1>{{product}}</h1>
+
+          <!-- 3. inStock 값에 따라 화면에 'In Stock' OR 'Out of Stock' 표시-->
+          <p v-if="inStock">In Stock</p>
+          <p v-else>Out of Stock</p>
+
+          <!-- 4. onSale 값에 따라 화면에 'On Sale!' 표시-->
+          <span v-if="onSale">On Sale!</span>
+
+          <!--  5. 상품설명 -->
+          <p>{{description}}</p>
+
+          <!--  6. 상품 상세 설명 -->
+          <ul>
+            <li v-for="detail in details">{{detail}}</li>
+          </ul>
+
+          <!--  7. color-box:  -->
+          <div
+            class="color-box"
+            v-for="option in options"
+            v-bind:style="{'background-color':option.optionColor}"
+            style="display: inline-block; margin-right: 10px"
+            @click="updateProduct(option.optionImage)"
+          ></div>
+          <hr />
+
+          <!--  8. button event 처리  -->
+          <button @click="addToCart">Add</button>
+          <button @click="removeFromCart">Remove</button>
+
+          <div class="cart">
+            <p>Cart({{cart}})</p>
+            <!-- 9.카트안의 상품 갯수 표시-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const { createApp, ref, reactive } = Vue;
+      var app = createApp({
+        setup() {
+          const product = ref("Dadas Blouse");
+          const image = ref("./img/blueBlouse.jpg");
+          const inStock = ref(true);
+          const max = ref(10); //재고수량
+          const onSale = ref(true);
+          const description = ref("올봄 잇아이템");
+          const details = reactive(["80% cotton", "20% polyester", "Gender-neutral"]);
+          const cart = ref(0); //장바구니에 담은 상품 개수
+
+          const options = reactive([
+            {
+              optionId: 2234,
+              optionColor: "violet",
+              optionImage: "./img/violetBlouse.jpg",
+            },
+            {
+              optionId: 2235,
+              optionColor: "blue",
+              optionImage: "./img/blueBlouse.jpg",
+            },
+          ]);
+
+          function addToCart() {
+            if (cart.value < max.value) {
+              cart.value++;
+            } else if (cart.value == max.value) {
+              inStock.value = false;
+              onSale.value = false;
+            }
+          }
+
+          function updateProduct(optionImage) {
+            image.value = optionImage;
+          } //color-box 클릭 시 이미지 변경
+
+          function removeFromCart() {
+            if (cart.value == max.value) {
+              inStock.value = true;
+              onSale.value = true;
+
+              cart.value--;
+            }
+
+            if (cart.value > 0) {
+              cart.value--;
+            }
+          }
+
+          return {
+            product,
+            image,
+            inStock,
+            onSale,
+            description,
+            details,
+            cart,
+            addToCart,
+            removeFromCart,
+            updateProduct,
+            options,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

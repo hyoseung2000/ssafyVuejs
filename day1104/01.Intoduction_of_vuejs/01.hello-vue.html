@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 콧수염 표기법 Mustache -->
+      <!-- 변수를 사용하려면 꼭 리턴을 해줘야 밖에서 사용가능-->
+      <!-- ref는 .value 안해도 접근 가능 -->
+      <h1>{{ message }}</h1>
+      <button v-on:click="increment">1씩 증가 - {{countNumber}}</button>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const message = ref("hello vue!!!");
+          // 항상 .value > 값에 접근 가능
+          console.log(message);
+          console.log(message.value);
+
+          const countNumber = ref(1);
+
+          const increment = function () {
+            // .value 잊지 말자 .!!!!!!!
+            countNumber.value++;
+          };
+          return {
+            message,
+            countNumber,
+            increment,
+          };
+        },
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

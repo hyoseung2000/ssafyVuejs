@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 1. cdn 추가 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <!-- 
+  1. 뷰 라이브러리 로딩(cdn)
+  2. 화면 요소 생성 (html)
+  3. 뷰 객체 생성(createAPP())
+  4. 생성된 뷰 객체와 화면을 연결(mount())
+  5. 뷰 객체의 데이터를 이용해 화면 부분 전환 (데이터 주입)
+  6. 최종 화면 확인
+ -->
+
+  <body>
+    <!-- 2. 화면 부분 -->
+    <div id="app">
+      min:{{min}}
+      <hr />
+      max: {{max}}
+      <hr />
+      name: {{name}}
+      <hr />
+      {{test()}}
+    </div>
+
+    <!-- 3. Vue 객체 생성 -->
+    <script>
+      // 4. Vue 라이브러리에서 필요한 대상 가져오기
+      const { createApp, ref } = Vue;
+
+      // 5. Vue 객체 (컴포넌트) 생성
+      const vue = createApp({
+        // 6. setup() : 초기화 함수
+        setup() {
+          const min = 100;
+          const max = ref(999); //7. 변수 선언시 반응형 상태로 지정
+          const name = ref("kim june");
+
+          function test() {
+            alert("helllo !!");
+          }
+
+          // 8.  Vue 객체 외부(화면)에서 사용 가능하도록 반드시 리턴
+          return {
+            min,
+            max,
+            name,
+            test,
+          };
+        },
+      }).mount("#app");
+
+      // vue.mount("#app"); // 9. 화면과 Vue 객체를 연결
+    </script>
+  </body>
+</html>
